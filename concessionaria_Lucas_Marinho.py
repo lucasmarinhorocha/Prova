@@ -1,4 +1,3 @@
-
 Usuario = {
     "compras" : [],
     "Saldo_disponivel" : 0.0,
@@ -65,8 +64,10 @@ def menu():
     print("1 - Venda de veiculos")
     print("2 - Aluguel de veiculos")
     print("3 - Compra de veiculos")
-    print("4 - Sair")
-    opcao = int(input("Escolha uma opção (1-4) ou (0) em qualquer momento para voltar ao menu: "))
+    print("4 - Ver saldo disponível")
+    print("5 - Sair")
+    print("6 - Ver todos os veiculos disponiveis")
+    opcao = int(input("Escolha uma opção (1-6) ou (0) em qualquer momento para voltar ao menu: "))
     return opcao
 
 
@@ -103,9 +104,8 @@ while sair:
 
             indice_marca = -1
             for i in range(len(geral["carros"])):
-                if (geral["carros"][i]["marca"].lower() == marca_venda and
-                    geral["carros"][i]["modelo"].lower() == modelo_venda):
-                    indice_marca = i
+                if (geral["carros"][i]["marca"] == marca_venda and
+                    geral["carros"][i]["modelo"] == modelo_venda):
                     break
 
             if indice_marca == -1:
@@ -167,8 +167,8 @@ while sair:
                 confirmacao2 = input("deseja alugar mais algum veiculo? (s/n): ").strip().lower()
 
         case 3:
-            loop = 's'
-            while loop != 'n':
+          
+            while True :
                 print("Opção de Compra selecionada.")
                 print("Informe o veiculo para a compra da lista seguinte.")
                 carro_comprado = lista_veiculos()
@@ -182,6 +182,7 @@ while sair:
 
                 print(f"O preço do veiculo escolhido é R$ {preco_compra:.2f}.\nCom um acrescimo de 25%, o valor final é R$ {preco_com_desconto:.2f}.")
                 confirmacao3 = input("Deseja finalizar a compra? (s/n): ").strip().lower()
+
                 if confirmacao3 == 's':
                     if(Usuario["Saldo_disponivel"] >= preco_com_desconto):
                         print("Compra realizada com sucesso!")
@@ -191,17 +192,29 @@ while sair:
                         adicionar_Usuario_compra(carro_comprado)
                         remover_veiculo(carro_comprado)
                         print(f"Veículo comprado adicionado ao seu histórico de compras.{Usuario['compras']}")
+                        break
                     else:
                         print("Saldo insuficiente para a compra.")
+                        break
 
-                loop = input("deseja comprar mais algum veiculo?(s/n): ").strip().lower()
-
-        case 4:
-            print("Saindo do sistema. Obrigado por visitar nossa concessionária!")
-            sair = False
-
-        case _:
-            print("Opção inválida. Por favor, escolha uma opção entre 1 e 4.")
-            
 
         
+        
+        case 4:
+            print("\n----SALDO DISPONIVEL----")
+            print(f"Saldo:{Usuario['Saldo_disponivel']:.2f}")
+            print("------------------------")
+
+        case 5:
+            print("Saindo do sistema. Obrigado por visitar nossa concessionária!")
+            sair = False
+        case 6:
+            print("--------------TODOS OS VEICULOS DISPONIVEIS-------------.")
+            for veiculo in Venda["veiculos"]:
+                for chave, valor in veiculo.items():
+                    print(chave, ":", valor)
+                print("---------")
+
+
+        case _:
+            print("Opção inválida. Por favor, escolha uma opção entre 1 e 6.")
